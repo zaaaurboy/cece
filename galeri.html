@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galeri Kita - Our Memories</title>
+  <style>
+    body {
+      background-color: #d9f0f0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h2 {
+      color: #3b49df;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .photo-container {
+      max-width: 600px;
+      width: 100%;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin-bottom: 25px;
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .photo-container img {
+      max-width: 180px;
+      max-height: 180px;
+      border-radius: 15px;
+      object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .upload-box {
+      background: white;
+      padding: 20px 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      max-width: 320px;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .upload-box label {
+      font-weight: bold;
+      color: #3b49df;
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="file"] {
+      margin-bottom: 15px;
+      width: 100%;
+    }
+    button.upload-btn {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+    button.upload-btn:hover {
+      background-color: #45a049;
+    }
+    button.logout-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      max-width: 320px;
+      width: 100%;
+    }
+    button.logout-btn:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <h2>Our Memories 🤍</h2>
+
+  <div class="photo-container" id="photo-container">
+    <!-- Foto akan muncul di sini -->
+  </div>
+
+  <div class="upload-box">
+    <form id="upload-form">
+      <label for="photo-upload">Add Photos</label>
+      <input type="file" id="photo-upload" name="photo" accept="image/*" required />
+      <button type="submit" class="upload-btn">Upload Foto ✨</button>
+    </form>
+  </div>
+
+  <button id="logout-btn" class="logout-btn">Keluar dulu ah 💔</button>
+
+  <script>
+    if (sessionStorage.getItem('loggedIn') !== 'true') {
+      window.location.href = 'login.html';
+    }
+
+    const photoContainer = document.getElementById('photo-container');
+    const uploadForm = document.getElementById('upload-form');
+    const photoUpload = document.getElementById('photo-upload');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    function loadPhotos() {
+      photoContainer.innerHTML = '';
+      const photos = JSON.parse(localStorage.getItem('galleryPhotos') || '[]');
+      photos.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        photoContainer.appendChild(img);
+      });
+    }
+
+    loadPhotos();
+
+    uploadForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const file = photoUpload.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const photos = JSON.parse(localStorage.getItem('galleryPhotos') || '[]');
+        photos.push(e.target.result);
+        localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+        loadPhotos();
+        uploadForm.reset();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    logoutBtn.addEventListener('click', function() {
+      sessionStorage.removeItem('loggedIn');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>
