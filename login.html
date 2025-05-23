@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galeri Kita - Login</title>
+  <style>
+    body {
+      background-color: #d9f0f0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-box {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 320px;
+    }
+    .login-box h2 {
+      color: #3b49df;
+      margin-bottom: 5px;
+    }
+    .login-box p {
+      font-weight: bold;
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin: 10px 0 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .error-message {
+      color: red;
+      margin-bottom: 15px;
+      font-weight: bold;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Galeri Kita 📷</h2>
+    <p>Jeje and Cece's Memory</p>
+    <div class="error-message" id="error-msg">Username atau password salah!</div>
+    <form id="login-form">
+      <input type="text" id="username" name="given_name" placeholder="Given name" required />
+      <input type="password" id="password" name="our_number" placeholder="Our Number" required />
+      <button type="submit">Masuk</button>
+    </form>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const errorMsg = document.getElementById('error-msg');
+
+    loginForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim().toLowerCase();
+      const password = document.getElementById('password').value.trim();
+
+      if (username === 'cece' && password === '4422') {
+        sessionStorage.setItem('loggedIn', 'true');
+        window.location.href = 'gallery.html';
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    });
+
+    if (sessionStorage.getItem('loggedIn') === 'true') {
+      window.location.href = 'gallery.html';
+    }
+  </script>
+</body>
+</html>
